@@ -1,0 +1,22 @@
+/* YAMAHA905 electric-blue Xbox One skin for Gamepad Viewer
+   This edit skin keeps Gamepad Viewer's live controller input. */
+html, body {
+  background: transparent !important;
+  overflow: hidden !important;
+}
+.edit {
+  filter: hue-rotate(188deg) saturate(2.15) contrast(1.08)
+          drop-shadow(0 0 5px rgba(0, 104, 255, .62))
+          drop-shadow(0 0 14px rgba(0, 65, 255, .28));
+}
+.edit .button.pressed,
+.edit .bumper.pressed,
+.edit .trigger.pressed,
+.edit .face.pressed,
+.edit .stick.pressed {
+  filter: brightness(1.7) saturate(1.5)
+          drop-shadow(0 0 7px rgba(0, 145, 255, .95));
+}
+.edit .stick {
+  filter: drop-shadow(0 0 4px rgba(0, 130, 255, .8));
+}
