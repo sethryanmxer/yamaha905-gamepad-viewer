@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YAMAHA905 • Xbox Gamepad Viewer</title>
+<style>
+:root{--blue:#12a9ff;--blue2:#006bff;--ice:#bdeaff;--ink:#07111c;--panel:rgba(5,16,29,.82);--line:rgba(44,174,255,.55);--white:#eef8ff}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:transparent;color:var(--white);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+body{display:grid;place-items:center}
+.viewer{width:min(100vw,1100px);padding:18px 22px 14px;position:relative}
+.viewer:before{content:"";position:absolute;inset:7% 2% 4%;border:1px solid rgba(18,169,255,.3);border-radius:24px;background:linear-gradient(135deg,rgba(3,17,31,.88),rgba(4,31,55,.7) 55%,rgba(2,11,22,.9));box-shadow:0 0 32px rgba(0,136,255,.16),inset 0 0 35px rgba(0,136,255,.08);z-index:-1}
+.header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:4px 14px 0}
+.brand{font-weight:900;letter-spacing:.16em;font-size:clamp(16px,2.8vw,25px);text-shadow:0 0 14px rgba(18,169,255,.65)}
+.brand span{color:var(--blue)}
+.sub{font-size:10px;letter-spacing:.24em;color:#8ebbd7;margin-top:4px}
+.status{font-size:11px;letter-spacing:.12em;color:#ffca73;text-transform:uppercase;white-space:nowrap}
+.status.connected{color:#7cf4c0;text-shadow:0 0 10px #00d98a}
+svg{width:100%;height:auto;max-height:70vh;overflow:visible;display:block}
+.shell{fill:url(#bodyGrad);stroke:#348ec4;stroke-width:3}
+.shell2{fill:none;stroke:rgba(109,205,255,.25);stroke-width:2}
+.detail{fill:#0b2033;stroke:#2d7cab;stroke-width:2}
+.trim{fill:none;stroke:#159fff;stroke-width:3;filter:url(#glow)}
+.btn{fill:#142c40;stroke:#6c9bb8;stroke-width:2;transition:.06s}
+.btn.active{fill:#13aaff;stroke:#d5f5ff;filter:url(#glow);transform-box:fill-box;transform-origin:center;transform:scale(1.12)}
+.btntext{font-size:17px;font-weight:900;fill:#ccecff;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.btntext.active{fill:white;filter:url(#glow)}
+.stick-ring{fill:#0a1928;stroke:#4386ad;stroke-width:5}
+.stick{fill:#24445b;stroke:#7bcaff;stroke-width:3;filter:drop-shadow(0 0 4px rgba(18,169,255,.3))}
+.dpad{fill:#24445b;stroke:#75bde5;stroke-width:1.5}
+.dpad.active{fill:#13aaff;filter:url(#glow)}
+.trigger{fill:#142e43;stroke:#367da6;stroke-width:2}
+.trigger-fill{fill:#12a9ff;opacity:.2;transition:height .06s,y .06s}
+.caption{font-size:11px;letter-spacing:.18em;fill:#83b6d5}
+.footer{display:flex;justify-content:space-between;gap:12px;padding:0 16px;color:#78a7c5;font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+.pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:#17b5ff;box-shadow:0 0 9px #17b5ff;margin-right:7px}
+@media(max-width:600px){.viewer{padding:12px 8px}.header{padding:2px 8px}.footer{padding:0 8px;font-size:8px}.status{font-size:9px}}
+</style>
+</head>
+<body>
+<main class="viewer" aria-label="YAMAHA905 Xbox controller viewer">
+  <header class="header">
+    <div><div class="brand">YAMAHA<span>905</span></div><div class="sub">LIVE INPUT // XBOX CONTROLLER</div></div>
+    <div id="status" class="status">● WAITING FOR CONTROLLER</div>
+  </header>
+  <svg viewBox="0 0 900 470" role="img" aria-label="Xbox controller input display">
+    <defs>
+      <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#18344b"/><stop offset=".48" stop-color="#0b1b2b"/><stop offset="1" stop-color="#142e43"/></linearGradient>
+      <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <path class="shell" d="M202 117 Q230 70 302 84 L382 103 Q450 118 518 103 L598 84 Q670 70 698 117 Q741 185 780 337 Q793 393 748 406 Q711 418 681 374 L621 300 Q600 278 570 278 H330 Q300 278 279 300 L219 374 Q189 418 152 406 Q107 393 120 337 Q159 185 202 117Z"/>
+    <path class="shell2" d="M211 127 Q241 89 303 101 L389 121 Q450 135 511 121 L597 101 Q659 89 689 127"/>
+    <path class="trim" d="M180 329 Q208 219 243 147 M720 329 Q692 219 657 147"/>
+    <path class="detail" d="M372 121 Q450 144 528 121 L520 164 Q450 184 380 164Z"/>
+    <text x="450" y="151" text-anchor="middle" font-size="18" font-weight="900" letter-spacing="5" fill="#d8f3ff">YAMAHA905</text>
+    <text class="caption" x="450" y="190" text-anchor="middle">XBOX INPUT MONITOR</text>
+    <!-- left stick -->
+    <circle class="stick-ring" cx="316" cy="240" r="48"/><circle id="leftStick" class="stick" cx="316" cy="240" r="25"/>
+    <text class="caption" x="316" y="303" text-anchor="middle">L STICK</text>
+    <!-- right stick -->
+    <circle class="stick-ring" cx="584" cy="320" r="48"/><circle id="rightStick" class="stick" cx="584" cy="320" r="25"/>
+    <text class="caption" x="584" y="383" text-anchor="middle">R STICK</text>
+    <!-- dpad -->
+    <g transform="translate(216 240)">
+      <path id="dpad-up" class="dpad" d="M-14 -39 H14 V-11 H-14Z"/><path id="dpad-down" class="dpad" d="M-14 11 H14 V39 H-14Z"/>
+      <path id="dpad-left" class="dpad" d="M-39 -14 H-11 V14 H-39Z"/><path id="dpad-right" class="dpad" d="M11 -14 H39 V14 H11Z"/>
+      <rect x="-11" y="-11" width="22" height="22" rx="3" fill="#17364e"/>
+    </g>
+    <!-- face buttons -->
+    <g><circle id="button-3" class="btn" cx="684" cy="202" r="20"/><text id="label-3" class="btntext" x="684" y="202">Y</text>
+      <circle id="button-1" class="btn" cx="714" cy="247" r="20"/><text id="label-1" class="btntext" x="714" y="247">B</text>
+      <circle id="button-0" class="btn" cx="654" cy="247" r="20"/><text id="label-0" class="btntext" x="654" y="247">A</text>
+      <circle id="button-2" class="btn" cx="684" cy="292" r="20"/><text id="label-2" class="btntext" x="684" y="292">X</text></g>
+    <!-- menu / view / guide -->
+    <circle id="button-8" class="btn" cx="395" cy="216" r="11"/><circle id="button-9" class="btn" cx="505" cy="216" r="11"/>
+    <text class="caption" x="395" y="244" text-anchor="middle">VIEW</text><text class="caption" x="505" y="244" text-anchor="middle">MENU</text>
+    <circle id="button-16" cx="450" cy="219" r="15" fill="#0e2c43" stroke="#23aaff" stroke-width="2"/>
+    <text x="450" y="223" text-anchor="middle" font-size="11" font-weight="bold" fill="#c7efff">X</text>
+    <!-- bumpers and triggers -->
+    <path class="trigger" d="M233 100 Q286 71 343 99 L333 122 Q281 104 240 128Z"/><path class="trigger" d="M567 99 Q624 71 677 100 L670 128 Q619 104 567 122Z"/>
+    <text class="caption" x="286" y="92" text-anchor="middle">LB</text><text class="caption" x="614" y="92" text-anchor="middle">RB</text>
+    <rect class="trigger" x="245" y="61" width="115" height="15" rx="7"/><rect class="trigger" x="540" y="61" width="115" height="15" rx="7"/>
+    <rect id="lt-fill" class="trigger-fill" x="245" y="61" width="0" height="15" rx="7"/><rect id="rt-fill" class="trigger-fill" x="540" y="61" width="0" height="15" rx="7"/>
+    <text class="caption" x="302" y="51" text-anchor="middle">LT</text><text class="caption" x="597" y="51" text-anchor="middle">RT</text>
+    <!-- stick clicks -->
+    <circle id="button-10" class="btn" cx="316" cy="240" r="9" opacity="0"/><circle id="button-11" class="btn" cx="584" cy="320" r="9" opacity="0"/>
+  </svg>
+  <footer class="footer"><span><i class="pulse"></i>YAMAHA905 GAMING</span><span>PRESS ANY BUTTON TO WAKE</span></footer>
+</main>
+<script>
+const statusEl=document.getElementById('status');
+const $=id=>document.getElementById(id);
+const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+function setButton(i,on){const el=$('button-'+i),label=$('label-'+i);if(el)el.classList.toggle('active',!!on);if(label)label.classList.toggle('active',!!on)}
+function setDpad(i,on){const el=$('dpad-'+i);if(el)el.classList.toggle('active',!!on)}
+function setStick(id,x,y){const el=$(id);if(!el)return;const cx=id==='leftStick'?316:584,cy=id==='leftStick'?240:320;el.setAttribute('cx',cx+clamp(x,-1,1)*19);el.setAttribute('cy',cy+clamp(y,-1,1)*19)}
+function setTrigger(id,value){const el=$(id),w=115*v(value);el.setAttribute('width',w)}
+function v(n){return clamp((n||0),0,1)}
+function update(){
+ const pads=navigator.getGamepads?navigator.getGamepads():[];
+ const pad=Array.from(pads).find(p=>p&&p.connected);
+ if(!pad){statusEl.textContent='● WAITING FOR CONTROLLER';statusEl.classList.remove('connected');requestAnimationFrame(update);return}
+ statusEl.textContent='● CONTROLLER CONNECTED';statusEl.classList.add('connected');
+ const b=pad.buttons||[];
+ for(let i=0;i<=16;i++)setButton(i,!!(b[i]&&(b[i].pressed||b[i].value>.5)));
+ setDpad('up',!!(b[12]&&b[12].pressed));setDpad('down',!!(b[13]&&b[13].pressed));setDpad('left',!!(b[14]&&b[14].pressed));setDpad('right',!!(b[15]&&b[15].pressed));
+ const a=pad.axes||[];setStick('leftStick',a[0]||0,a[1]||0);setStick('rightStick',a[2]||0,a[3]||0);
+ $('lt-fill').setAttribute('width',115*v(b[6]&&b[6].value));$('rt-fill').setAttribute('width',115*v(b[7]&&b[7].value));
+ requestAnimationFrame(update)
+}
+window.addEventListener('gamepadconnected',()=>{statusEl.textContent='● CONTROLLER CONNECTED';statusEl.classList.add('connected')});
+window.addEventListener('gamepaddisconnected',()=>{statusEl.textContent='● CONTROLLER DISCONNECTED';statusEl.classList.remove('connected')});
+if(!('getGamepads'in navigator))statusEl.textContent='GAMEPAD API NOT SUPPORTED';
+requestAnimationFrame(update);
+</script>
+</body>
+</html>
